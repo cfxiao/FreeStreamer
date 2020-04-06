@@ -242,10 +242,17 @@
         
         [self setAudioSessionActive:NO];
     } else if (state == kFsAudioStreamPlaybackCompleted && [self hasNextItem]) {
-        self.currentPlaylistItemIndex = self.currentPlaylistItemIndex + 1;
-        self.songSwitchInProgress = YES;
+        BOOL playNext = YES;
+        if ([self.delegate respondsToSelector:@selector(audioControllerAutoPlayNext:)]) {
+            playNext = [self.delegate audioControllerAutoPlayNext:self];
+        }
         
-        [self play];
+        if (playNext) {
+            self.currentPlaylistItemIndex = self.currentPlaylistItemIndex + 1;
+            self.songSwitchInProgress = YES;
+            
+            [self play];
+        }
     } else if (state == kFsAudioStreamFailed) {
         if (self.enableDebugOutput) {
             NSLog(@"Stream %@ failed. Deactivating audio session", self.audioStream.url);

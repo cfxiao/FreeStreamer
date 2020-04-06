@@ -271,4 +271,6 @@
  * @param stream The stream which is preloaded.
  */
 - (void)audioController:(FSAudioController *)audioController preloadStartedForStream:(FSAudioStream *)stream;
+
+- (BOOL)audioControllerAutoPlayNext:(FSAudioController *)audioController;
 @end
